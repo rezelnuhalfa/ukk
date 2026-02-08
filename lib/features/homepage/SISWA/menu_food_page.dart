@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/menu_detail_page.dart';
 import '../SISWA/models/menumodel.dart';
 import '../SISWA/services/menu_service.dart';
-import 'menu_detail_page.dart';
+
 
 class MenuFoodPage extends StatelessWidget {
   const MenuFoodPage({super.key});

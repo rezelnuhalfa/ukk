@@ -3,11 +3,11 @@ class ApiConfig {
   static const String baseUrl =
       'https://ukk-p2.smktelkom-mlg.sch.id/api/';
 
-  /// BASE IMAGE (LARAVEL STORAGE)
+  /// BASE IMAGE
   static const String imageBaseUrl =
       'https://ukk-p2.smktelkom-mlg.sch.id/';
 
-  /// TOKEN
+  /// TOKEN LOGIN
   static String token = '';
 
   static Map<String, String> headersNoAuth() => {

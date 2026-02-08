@@ -17,7 +17,7 @@ class _MainSiswaPageState extends State<MainSiswaPage> {
   final List<Widget> _pages = const [
     HomeSiswaPage(),
     Checkoutpage(),
-    Pesananpage(),
+    PesananPage(),
     ProfilePage(),
   ];
 

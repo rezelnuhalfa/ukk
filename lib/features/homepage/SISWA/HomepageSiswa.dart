@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/menu_detail_page.dart';
 import 'menu_drink_page.dart';
 import 'menu_food_page.dart';
 import 'StanPage.dart';
@@ -10,7 +11,7 @@ import 'services/diskon_service.dart';
 import 'services/menu_service.dart';
 import 'services/profileservice.dart';
 import 'WIDGETS/banner_diskon.dart';
-import 'menu_detail_page.dart';
+
 
 class HomeSiswaPage extends StatefulWidget {
   const HomeSiswaPage({super.key});

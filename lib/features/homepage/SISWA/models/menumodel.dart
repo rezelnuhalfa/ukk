@@ -1,8 +1,8 @@
 class MenuModel {
   final int? id;
-  final int? idMenu; // Pastikan namanya idMenu (huruf M besar)
+  final int? idMenu; // Sesuai API, huruf M besar
   final String namaMakanan;
-  final int harga;
+  final int harga; // selalu int
   final String jenis;
   final String? foto;
   final String? deskripsi;
@@ -13,7 +13,7 @@ class MenuModel {
 
   MenuModel({
     this.id,
-    this.idMenu, // Sesuai di sini
+    this.idMenu,
     required this.namaMakanan,
     required this.harga,
     required this.jenis,
@@ -26,14 +26,23 @@ class MenuModel {
   });
 
   factory MenuModel.fromJson(Map<String, dynamic> json) {
+    // Pastikan harga selalu int
+    int parsedHarga = 0;
+    if (json['harga'] != null) {
+      if (json['harga'] is int) {
+        parsedHarga = json['harga'];
+      } else if (json['harga'] is double) {
+        parsedHarga = (json['harga'] as double).toInt();
+      } else {
+        parsedHarga = int.tryParse(json['harga'].toString()) ?? 0;
+      }
+    }
+
     return MenuModel(
       id: json['id'],
-      idMenu:
-          json['id_menu'], // Mengambil dari key JSON id_menu ke variabel idMenu
+      idMenu: json['id_menu'],
       namaMakanan: json['nama_makanan'] ?? '',
-      harga: json['harga'] is int
-          ? json['harga']
-          : int.tryParse(json['harga'].toString()) ?? 0,
+      harga: parsedHarga,
       jenis: json['jenis'] ?? '',
       foto: json['foto'],
       deskripsi: json['deskripsi'],
@@ -60,6 +69,7 @@ class MenuModel {
     };
   }
 
+  /// Dapatkan URL foto lengkap
   String get fullFotoUrl {
     if (foto == null || foto!.isEmpty) {
       return 'https://via.placeholder.com/150';
