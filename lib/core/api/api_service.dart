@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'api_config.dart';
 
 class ApiService {
+
   /// POST TANPA TOKEN
-  /// contoh: login, register
   static Future<http.Response> postNoAuth(
     String endpoint, {
     Map<String, String>? body,
@@ -16,7 +16,6 @@ class ApiService {
   }
 
   /// POST DENGAN TOKEN
-  /// contoh: menu, diskon, profile
   static Future<http.Response> postAuth(
     String endpoint, {
     Map<String, String>? body,
@@ -25,6 +24,14 @@ class ApiService {
       Uri.parse(ApiConfig.baseUrl + endpoint),
       headers: ApiConfig.headersWithAuth(),
       body: body,
+    );
+  }
+
+  /// ✅ GET DENGAN TOKEN
+  static Future<http.Response> getAuth(String endpoint) async {
+    return await http.get(
+      Uri.parse(ApiConfig.baseUrl + endpoint),
+      headers: ApiConfig.headersWithAuth(),
     );
   }
 }

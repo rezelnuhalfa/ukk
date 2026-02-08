@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/homepage/SISWA/HomepageSiswa.dart';
 import 'package:flutter_application_1/features/homepage/SISWA/WIDGETS/bottomnavbar.dart';
 import '../homepage/STAN/homepagestan.dart';
 import 'login_service.dart';
@@ -26,7 +27,7 @@ class LoginController {
 
         ApiConfig.token = body['access_token']; // 🔥 FIX
         debugPrint('TOKEN VALID: ${ApiConfig.token}');
-
+ 
         if (role == 'Siswa') {
           Navigator.pushReplacement(
             context,
@@ -35,7 +36,7 @@ class LoginController {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const Homepagestan()),
+            MaterialPageRoute(builder: (_) => const DashboardStanPage()),
           );
         }
         return;

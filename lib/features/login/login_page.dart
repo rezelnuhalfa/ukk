@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/register/register_page.dart';
+
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,8 +12,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String role = 'Siswa';
+
   final usernameC = TextEditingController();
   final passwordC = TextEditingController();
+
   bool isLoading = false;
   bool isPasswordHidden = true;
 
@@ -32,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            /// ================= BACKGROUND KUNING =================
+            /// BACKGROUND
             Container(
               height: headerHeight,
               width: double.infinity,
@@ -41,25 +44,18 @@ class _LoginPageState extends State<LoginPage> {
                   bottom: Radius.circular(50),
                 ),
                 image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/backgroundKuning.jpg',
-                  ),
+                  image: AssetImage('assets/images/backgroundKuning.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
 
-            /// ================= CONTENT =================
+            /// CONTENT
             SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(24, 80, 24, 24),
               child: Column(
                 children: [
-                  /// LOGO
-                  const Icon(
-                    Icons.storefront,
-                    size: 80,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.storefront, size: 80, color: Colors.white),
                   const SizedBox(height: 12),
                   const Text(
                     'Kantin Digital',
@@ -73,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 40),
 
-                  /// ================= CARD LOGIN =================
+                  /// LOGIN CARD
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -100,14 +96,16 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 24),
 
+                        /// USERNAME
                         inputField(
                           label: 'Username',
                           icon: Icons.person,
                           controller: usernameC,
                         ),
+
                         const SizedBox(height: 16),
 
-                        /// PASSWORD + EYE
+                        /// PASSWORD
                         inputField(
                           label: 'Password',
                           icon: Icons.lock,
@@ -118,7 +116,6 @@ class _LoginPageState extends State<LoginPage> {
                               isPasswordHidden
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.grey,
                             ),
                             onPressed: () {
                               setState(() {
@@ -176,7 +173,6 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text.rich(
                             TextSpan(
                               text: 'Belum punya akun? ',
-                              style: TextStyle(fontFamily: 'Poppins'),
                               children: [
                                 TextSpan(
                                   text: 'Daftar',
@@ -202,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // ================= LOGIC =================
+  /// ================= LOGIN =================
   void _handleLogin() async {
     final username = usernameC.text.trim();
     final password = passwordC.text.trim();
@@ -221,24 +217,14 @@ class _LoginPageState extends State<LoginPage> {
       password: password,
     );
 
-    if (mounted) {
-      setState(() => isLoading = false);
-    }
+    if (mounted) setState(() => isLoading = false);
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          msg,
-          style: const TextStyle(fontFamily: 'Poppins'),
-        ),
-        backgroundColor: Colors.redAccent,
-      ),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
-  // ================= UI COMPONENT =================
+  /// INPUT FIELD
   Widget inputField({
     required String label,
     required IconData icon,
@@ -249,10 +235,8 @@ class _LoginPageState extends State<LoginPage> {
     return TextField(
       controller: controller,
       obscureText: obscure,
-      style: const TextStyle(fontFamily: 'Poppins'),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(fontFamily: 'Poppins'),
         prefixIcon: Icon(icon),
         suffixIcon: suffix,
         filled: true,
@@ -265,8 +249,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// ROLE CARD
   Widget roleCard(String value, IconData icon) {
     final active = role == value;
+
     return Expanded(
       child: GestureDetector(
         onTap: () => setState(() => role = value),
@@ -278,17 +264,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Column(
             children: [
-              Icon(
-                icon,
-                color: active ? Colors.white : Colors.grey,
-              ),
+              Icon(icon, color: active ? Colors.white : Colors.grey),
               const SizedBox(height: 6),
               Text(
                 value,
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: active ? Colors.white : Colors.grey,
-                ),
+                style: TextStyle(color: active ? Colors.white : Colors.grey),
               ),
             ],
           ),

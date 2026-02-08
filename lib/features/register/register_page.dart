@@ -15,8 +15,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final picker = ImagePicker();
 
-  Uint8List? fotoBytes; // WEB
-  String? fotoPath; // MOBILE
+  Uint8List? fotoBytes;
+  String? fotoPath;
 
   final nama = TextEditingController();
   final alamat = TextEditingController();
@@ -37,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  // ================= IMAGE PICKER =================
+  /// ================= IMAGE =================
   Future<void> pickImage() async {
     final img = await picker.pickImage(source: ImageSource.gallery);
     if (img == null) return;
@@ -81,7 +81,6 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            /// ================= BACKGROUND KUNING =================
             Container(
               height: headerHeight,
               width: double.infinity,
@@ -98,7 +97,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
 
-            /// ================= CONTENT =================
             SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(24, 80, 24, 24),
               child: Column(
@@ -121,7 +119,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   const SizedBox(height: 40),
 
-                  /// ================= CARD =================
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -137,16 +134,26 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Column(
                       children: [
-                        _imagePicker(),
-                        const SizedBox(height: 20),
+                        /// FOTO ONLY SISWA
+                        if (widget.role == 'Siswa') _imagePicker(),
+                        if (widget.role == 'Siswa')
+                          const SizedBox(height: 20),
 
-                        _field('Nama', nama),
+                        /// NAMA (Dynamic Label)
+                        _field(
+                          widget.role == 'Siswa'
+                              ? 'Nama Siswa'
+                              : 'Nama Stan / Nama Pemilik',
+                          nama,
+                        ),
+
+                        /// ALAMAT ONLY SISWA
                         if (widget.role == 'Siswa')
                           _field('Alamat', alamat),
+
                         _field('Telp', telp),
                         _field('Username', username),
 
-                        /// PASSWORD + EYE
                         _field(
                           'Password',
                           password,
@@ -156,7 +163,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               hidePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.grey,
                             ),
                             onPressed: () {
                               setState(() {
@@ -175,22 +181,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: isLoading ? null : _submit,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
-                              ),
                             ),
                             child: isLoading
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
-                                    strokeWidth: 2,
                                   )
-                                : const Text(
-                                    'Daftar',
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                : const Text('Daftar'),
                           ),
                         ),
                       ],
@@ -205,7 +201,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // ================= FIELD =================
   Widget _field(
     String label,
     TextEditingController c, {
@@ -217,10 +212,8 @@ class _RegisterPageState extends State<RegisterPage> {
       child: TextField(
         controller: c,
         obscureText: obscure,
-        style: const TextStyle(fontFamily: 'Poppins'),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(fontFamily: 'Poppins'),
           suffixIcon: suffix,
           filled: true,
           fillColor: Colors.grey.shade100,
@@ -233,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // ================= SUBMIT =================
+  /// ================= SUBMIT =================
   Future<void> _submit() async {
     if (password.text.length < 6) {
       _error('Password minimal 6 karakter');
@@ -242,13 +235,26 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => isLoading = true);
 
-    final data = {
-      'username': username.text,
-      'password': password.text,
-      'telp': telp.text,
-      'nama_siswa': nama.text,
-      'alamat': alamat.text,
-    };
+    /// 🔥 DATA DINAMIS BERDASARKAN ROLE
+    Map<String, String> data;
+
+    if (widget.role == 'Siswa') {
+      data = {
+        'nama_siswa': nama.text,
+        'alamat': alamat.text,
+        'telp': telp.text,
+        'username': username.text,
+        'password': password.text,
+      };
+    } else {
+      data = {
+        'nama_stan': nama.text,
+        'nama_pemilik': nama.text,
+        'telp': telp.text,
+        'username': username.text,
+        'password': password.text,
+      };
+    }
 
     final success = await RegisterController.register(
       context: context,
@@ -262,31 +268,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => isLoading = false);
 
-    if (success == true) {
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Daftar berhasil, silakan login',
-            style: TextStyle(fontFamily: 'Poppins'),
-          ),
+          content: Text('Daftar berhasil, silakan login'),
           backgroundColor: Colors.green,
         ),
       );
 
       await Future.delayed(const Duration(milliseconds: 800));
-      Navigator.pop(context); 
+      Navigator.pop(context);
     }
   }
 
   void _error(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          msg,
-          style: const TextStyle(fontFamily: 'Poppins'),
-        ),
-        backgroundColor: Colors.redAccent,
-      ),
+      SnackBar(content: Text(msg)),
     );
   }
 }

@@ -116,31 +116,7 @@ class _CheckoutpageState extends State<Checkoutpage> {
                 ),
 
                 /// TOTAL & BUTTON KIRIM
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      _totalHarga(cart),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: isLoading ? null : kirimPesanan,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          child: isLoading
-                              ? const CircularProgressIndicator(color: Colors.white)
-                              : const Text("Kirim Pesanan", style: TextStyle(fontSize: 18)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+               
               ],
             ),
     );
@@ -175,20 +151,5 @@ class _CheckoutpageState extends State<Checkoutpage> {
     );
   }
 
-  /// TOTAL HARGA MODERN
-  Widget _totalHarga(List cart) {
-    int total = 0;
-    for (var item in cart) {
-      // CAST ke int supaya aman
-      total += (item.menu.harga * item.qty).toInt();
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text("Total", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        Text("Rp $total", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      ],
-    );
-  }
 }
 
